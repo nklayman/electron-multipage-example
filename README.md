@@ -1,29 +1,23 @@
-# electron-test
+# Electron Multipage Example
+
+> A demo repository for adding multiple pages and windows to your [Vue CLI Plugin Electron Builder](https://nklayman.github.io/vue-cli-plugin-electron-builder/) App
+
+[Instructions on Vue CLI Plugin Electron Builder Docs](https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/recipes.html#multiple-pages)
 
 ## Project setup
+
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Start Electron development server
+
 ```
-yarn run serve
+yarn electron:serve
 ```
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+### Build Electron app for distribution
 
-### Run your tests
 ```
-yarn run test
+yarn electron:build
 ```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

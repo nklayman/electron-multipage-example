@@ -1,5 +1,5 @@
 {
-  "name": "electron-test",
+  "name": "electron-multipage-example",
   "version": "0.1.0",
   "private": true,
   "scripts": {
