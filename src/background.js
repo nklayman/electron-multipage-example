@@ -11,7 +11,6 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 let secondWin
-let createdAppProtocol = false
 // Standard scheme must be registered before the app is ready
 protocol.registerStandardSchemes(['app'], { secure: true })
 function createWindow(winVar, devPath, prodPath) {
@@ -23,10 +22,6 @@ function createWindow(winVar, devPath, prodPath) {
     winVar.loadURL(process.env.WEBPACK_DEV_SERVER_URL + devPath)
     if (!process.env.IS_TEST) winVar.webContents.openDevTools()
   } else {
-    if (!createdAppProtocol) {
-      createProtocol('app')
-      createdAppProtocol = true
-    }
     // Load the index.html when not in development
     winVar.loadURL(`app://./${prodPath}`)
   }
@@ -67,6 +62,9 @@ app.on('ready', async () => {
     } catch (e) {
       console.error('Vue Devtools failed to install:', e.toString())
     }
+  }
+  if (!process.env.WEBPACK_DEV_SERVER_URL) {
+    createProtocol('app')
   }
   createWindow(win, '', 'index.html')
   createWindow(secondWin, 'subpage', 'subpage.html')
