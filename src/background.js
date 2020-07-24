@@ -7,15 +7,13 @@ import {
 } from 'vue-cli-plugin-electron-builder/lib'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let win
 let secondWin
 // Standard scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true, standard: true } }])
-function createWindow(winVar, devPath, prodPath) {
+function createWindow(devPath, prodPath) {
   // Create the browser window.
-  winVar = new BrowserWindow({ width: 800, height: 600, webPreferences: {
+  const window = new BrowserWindow({ width: 800, height: 600, webPreferences: {
     // Use pluginOptions.nodeIntegration, leave this alone
     // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
     nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
@@ -23,16 +21,12 @@ function createWindow(winVar, devPath, prodPath) {
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    winVar.loadURL(process.env.WEBPACK_DEV_SERVER_URL + devPath)
-    if (!process.env.IS_TEST) winVar.webContents.openDevTools()
+    window.loadURL(process.env.WEBPACK_DEV_SERVER_URL + devPath)
+    if (!process.env.IS_TEST) window.webContents.openDevTools()
   } else {
     // Load the index.html when not in development
-    winVar.loadURL(`app://./${prodPath}`)
+    window.loadURL(`app://./${prodPath}`)
   }
-
-  winVar.on('closed', () => {
-    winVar = null
-  })
 }
 
 // Quit when all windows are closed.
@@ -48,10 +42,10 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (win === null) {
-    createWindow(win, '', 'index.html')
+    win = createWindow('', 'index.html')
   }
   if (secondWin === null) {
-    createWindow(secondWin, 'subpage', 'subpage.html')
+    secondWin = createWindow('subpage', 'subpage.html')
   }
 })
 
@@ -70,8 +64,8 @@ app.on('ready', async () => {
   if (!process.env.WEBPACK_DEV_SERVER_URL) {
     createProtocol('app')
   }
-  createWindow(win, '', 'index.html')
-  createWindow(secondWin, 'subpage', 'subpage.html')
+  win = createWindow('', 'index.html')
+  secondWin = createWindow('subpage', 'subpage.html')
 })
 
 // Exit cleanly on request from parent process in development mode.
