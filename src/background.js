@@ -27,6 +27,8 @@ function createWindow(devPath, prodPath) {
     // Load the index.html when not in development
     window.loadURL(`app://./${prodPath}`)
   }
+
+  return window
 }
 
 // Quit when all windows are closed.
@@ -41,10 +43,10 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (win === null) {
+  if (win.isDestroyed()) {
     win = createWindow('', 'index.html')
   }
-  if (secondWin === null) {
+  if (secondWin.isDestroyed()) {
     secondWin = createWindow('subpage', 'subpage.html')
   }
 })
